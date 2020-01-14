@@ -12,7 +12,7 @@
     "react-scripts": "3.3.0",
     "typescript": "~3.7.2"
   },
-  "homepage": ".template_basepath",
+  "homepage": ".",
   "scripts": {
     "start": "cross-env REACT_APP_DEPLOY_ENV=local react-app-rewired start",
     "start-prod": "cross-env REACT_APP_DEPLOY_ENV=prod react-app-rewired start",
