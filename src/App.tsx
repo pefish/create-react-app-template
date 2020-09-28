@@ -26,8 +26,8 @@ const App: React.FC = () => {
           height: `100%`,
         }}>
           <Switch>
-            <Route exact path="template_basepath/home" component={Home}/>
-            <Route exact path="template_basepath/" component={Home}/>
+            <Route exact path="/home" component={Home}/>
+            <Route exact path="/" component={Home}/>
             <Route component={NotFound} />
           </Switch>
         </div>
