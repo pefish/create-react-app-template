@@ -2,19 +2,21 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import './home.css'
 import {
-  Image, Layout, Menu, Button
+  Image, Layout, Menu, Button, Modal
 } from 'antd';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import HomeStore from '../store/home_store';
+import CommonStore from '../store/common_store';
 
 
 const { Sider } = Layout;
 
 
-@inject('homeStore')
+@inject('homeStore', 'commonStore')
 @observer
 export default class Home extends React.Component<{
   homeStore?: HomeStore,
+  commonStore?: CommonStore,
   [x: string]: any,
 }, any> {
 
@@ -66,8 +68,10 @@ export default class Home extends React.Component<{
           justifyContent: "space-between",
           alignItems: "center"
         }}>
-          <div>
-            <span>这里是网站简标题</span>
+          <div className="click-div" onClick={() => {
+            window.location.href = "./"
+          }}>
+            <span>{this.props.commonStore!.websiteSimpleTitle}</span>
           </div>
           <div style={{
             display: "flex",
@@ -75,9 +79,11 @@ export default class Home extends React.Component<{
           }}>
             <div className="click-div" style={{
               marginRight: 20
-            }}><span onClick={() => {
-              alert("点击登陆")
-            }}>登陆</span></div>
+            }} onClick={() => {
+              Modal.info({
+                content: "点击了登陆"
+              })
+            }}><span>登陆</span></div>
             <div className="click-div"><span>注册</span></div>
           </div>
         </div>
@@ -107,7 +113,7 @@ export default class Home extends React.Component<{
                     color: "#009a61",
                     marginLeft: 10,
                     fontSize: 28
-                  }}>这里是网站简标题</span>
+                  }}>{this.props.commonStore!.websiteSimpleTitle}</span>
                 </div>
               </div>
               <Layout className="all-menu-content">
