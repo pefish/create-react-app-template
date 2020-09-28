@@ -1,5 +1,9 @@
-import { observable, action } from 'mobx';
+import { observable } from 'mobx';
 import CommonStore from './common_store';
+import { withGlobalLoading, wrapPromise } from '../util/decorator';
+import HttpRequestUtil from "@pefish/js-util-httprequest"
+import { ReturnType } from '../util/type';
+
 
 const isWebMediaString = "(min-width: 996px)"
 export default class HomeStore {
@@ -18,23 +22,23 @@ export default class HomeStore {
     this.commonStore = commonStore
   }
 
-  public async setMediaListeners () {
+  public setMediaListeners () {
     this.isWebMatchMedia.addListener(e => {
       this.isWeb = e.matches
     });
   }
 
-  public async setSelectedMemu (key: string) {
+  public setSelectedMemu (key: string) {
     this.selectedMenu = key
   }
 
-  @action
-  async add () {
-    try {
-      this.counter++
-    } catch(err) {
-      console.error(err)
-      throw err
-    }
+  public add () {
+    this.counter++
+  }
+
+  @withGlobalLoading()
+  @wrapPromise()
+  public async requestBaidu (): Promise<ReturnType> {
+    return await HttpRequestUtil.get("https://www.baidu.com")
   }
 }

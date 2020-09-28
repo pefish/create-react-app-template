@@ -2,10 +2,11 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import './home.css'
 import {
-  Image, Layout, Menu, Input, Button
+  Image, Layout, Menu, Button
 } from 'antd';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import HomeStore from '../store/home_store';
+
 
 const { Sider } = Layout;
 
@@ -24,13 +25,12 @@ export default class Home extends React.Component<{
   selectMenuContent() {
     if (this.props.homeStore!.selectedMenu === "test1") {
       return (
-        <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-          <div style={{
-            width: 300
-          }}>
-            <Input placeholder={`用户名`} />
-            <Input placeholder={`密码`} />
-            <Button type={`primary`}>登录</Button>
+        <div className="menu-content">
+          <div>
+            <Button type={`primary`} onClick={async () => {
+              await this.props.homeStore!.requestBaidu()
+
+            }}>请求百度</Button>
           </div>
           <div style={{
             display: `flex`,
@@ -48,11 +48,11 @@ export default class Home extends React.Component<{
       )
     } else if (this.props.homeStore!.selectedMenu === "test2") {
       return (
-        <div>test2</div>
+        <div className="menu-content">test2</div>
       )
     } else {
       return (
-        <div>nothing</div>
+        <div className="menu-content">nothing</div>
       )
     }
 
@@ -110,7 +110,7 @@ export default class Home extends React.Component<{
                   }}>这里是网站简标题</span>
                 </div>
               </div>
-              <Layout className="menu-content">
+              <Layout className="all-menu-content">
                 <Sider
                   breakpoint="lg"
                   collapsedWidth="0"
