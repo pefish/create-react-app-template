@@ -18,13 +18,14 @@ build:
   only:
     - master
 
-deploy_to_k8s:
+deploy:
   stage: deploy
   image:
-    name: bitnami/kubectl:latest
+    name: pefish/kustomize:latest
     entrypoint: [""]
   script:
-    - kubectl --kubeconfig="$KUBE_CONFIG" -n default set image deployment/XXX XXX=$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - kustomize build ./deploy | kubectl --kubeconfig="$KUBE_CONFIG" apply -f -
+    - kubectl --kubeconfig="$KUBE_CONFIG" -n default set image deployment/frontend-template template=$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
   only:
     - master
 
