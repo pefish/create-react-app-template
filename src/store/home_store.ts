@@ -13,10 +13,12 @@ export default class HomeStore {
   public counter = 0;
 
   private isWebMatchMedia = window.matchMedia(isWebMediaString)
-  @observable
-  public isWeb = this.isWebMatchMedia.matches
-  @observable
-  public selectedMenu: string = "test1"
+  @observable public isWeb = this.isWebMatchMedia.matches
+  @observable public selectedMenu: string = "test1"
+
+  @observable public loginModalVisible: boolean = false
+  @observable public loginUsername: string = ""
+  @observable public loginPassword: string = ""
 
   constructor (commonStore: CommonStore) {
     this.commonStore = commonStore
@@ -32,13 +34,25 @@ export default class HomeStore {
     this.selectedMenu = key
   }
 
-  public add () {
-    this.counter++
-  }
-
   @withGlobalLoading()
   @wrapPromise()
-  public async requestBaidu (): Promise<ReturnType> {
-    return await HttpRequestUtil.get("https://www.baidu.com")
+  public async loginOrLogout (): Promise<ReturnType> {
+    if (this.commonStore.persistenceStore.get("jwt")) {
+      // logout
+      this.commonStore.persistenceStore.remove("jwt")
+      this.commonStore.persistenceStore.remove("username")
+      return {} as any
+    } else {
+      // login
+      // const jwt = await HttpRequestUtil.post("https://www.baidu.com")
+      const jwt = "hsgfjsfgjsyjsfjs"
+      this.loginModalVisible = false
+      this.commonStore.persistenceStore.set("jwt", jwt)
+      this.commonStore.persistenceStore.set("username", this.loginUsername)
+      return {
+        jwt: jwt
+      } as any
+    }
+
   }
 }

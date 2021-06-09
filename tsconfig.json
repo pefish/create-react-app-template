@@ -23,7 +23,8 @@
       "node_modules/@types",
       "node_modules/@pefish"
     ],
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

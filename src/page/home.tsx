@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import './home.css'
 import {
-  Image, Layout, Menu, Button, Modal
+  Image, Layout, Menu, Button, Modal, Input
 } from 'antd';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import HomeStore from '../store/home_store';
@@ -28,24 +28,7 @@ export default class Home extends React.Component<{
     if (this.props.homeStore!.selectedMenu === "test1") {
       return (
         <div className="menu-content">
-          <div>
-            <Button type={`primary`} onClick={async () => {
-              await this.props.homeStore!.requestBaidu()
-
-            }}>请求百度</Button>
-          </div>
-          <div style={{
-            display: `flex`,
-            flexDirection: `column`,
-            marginTop: 100
-          }}>
-            <span>
-              {this.props.homeStore!.counter}
-            </span>
-            <Button type={`primary`} onClick={() => {
-              this.props.homeStore!.add()
-            }}>加计数</Button>
-          </div>
+          这是内容
         </div>
       )
     } else if (this.props.homeStore!.selectedMenu === "test2") {
@@ -77,14 +60,19 @@ export default class Home extends React.Component<{
             display: "flex",
             justifyContent: "space-between",
           }}>
-            <div className="click-div" style={{
-              marginRight: 20
-            }} onClick={() => {
-              Modal.info({
-                content: "点击了登陆"
-              })
-            }}><span>登陆</span></div>
-            <div className="click-div"><span>注册</span></div>
+            <label style={{
+              marginRight: 10,
+              color: "red"
+            }}>{this.props.commonStore!.persistenceStore.get("jwt") ? this.props.commonStore!.persistenceStore.get("username") : ""}</label>
+            <div className="click-div" onClick={() => {
+              if (this.props.commonStore!.persistenceStore.get("jwt")) {
+                // logout
+                this.props.homeStore!.loginOrLogout()
+              } else {
+                // login
+                this.props.homeStore!.loginModalVisible = true
+              }
+            }}><span>{this.props.commonStore!.persistenceStore.get("jwt") ? "登出" : "登陆"}</span></div>
           </div>
         </div>
         <div className="content">
@@ -161,6 +149,27 @@ export default class Home extends React.Component<{
           }}></div>
         </div>
         <div className="footer">Copyright © 2020-2030 Created by PEFISH</div>
+
+        <Modal
+          title="登陆"
+          visible={this.props.homeStore!.loginModalVisible}
+          footer={null}
+          onCancel={() => {
+            this.props.homeStore!.loginModalVisible = false
+          }}
+        >
+          <Input placeholder="用户名" addonBefore="用户名" value={this.props.homeStore!.loginUsername} onChange={(e) => {
+            this.props.homeStore!.loginUsername = e.target.value
+          }} />
+          <Input placeholder="密码" addonBefore="密码" type={"password"} value={this.props.homeStore!.loginPassword} onChange={(e) => {
+            this.props.homeStore!.loginPassword = e.target.value
+          }} />
+          <Button type={`primary`} onClick={() => {
+            this.props.homeStore!.loginOrLogout()
+          }} style={{
+            marginTop: 10,
+          }}>确认</Button>
+        </Modal>
       </div>
     );
   }
