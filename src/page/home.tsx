@@ -2,11 +2,12 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import './home.css'
 import {
-  Image, Layout, Menu, Button, Modal, Input
+  Image, Layout, Menu, Button, Input
 } from 'antd';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import HomeStore from '../store/home_store';
 import CommonStore from '../store/common_store';
+import MyModal from "../component/my_modal";
 
 
 const { Sider } = Layout;
@@ -150,14 +151,9 @@ export default class Home extends React.Component<{
         </div>
         <div className="footer">Copyright © 2020-2030 Created by PEFISH</div>
 
-        <Modal
-          title="登陆"
-          visible={this.props.homeStore!.loginModalVisible}
-          footer={null}
-          onCancel={() => {
-            this.props.homeStore!.loginModalVisible = false
-          }}
-        >
+        <MyModal title={"登陆"} visible={this.props.homeStore!.loginModalVisible} onCancel={() => {
+          this.props.homeStore!.loginModalVisible = false
+        }}>
           <Input placeholder="用户名" addonBefore="用户名" value={this.props.homeStore!.loginUsername} onChange={(e) => {
             this.props.homeStore!.loginUsername = e.target.value
           }} />
@@ -169,7 +165,7 @@ export default class Home extends React.Component<{
           }} style={{
             marginTop: 10,
           }}>确认</Button>
-        </Modal>
+        </MyModal>
       </div>
     );
   }
