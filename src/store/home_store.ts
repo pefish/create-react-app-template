@@ -36,22 +36,21 @@ export default class HomeStore {
 
   @withGlobalLoading()
   @wrapPromise()
-  public async loginOrLogout (): Promise<ReturnType> {
+  public async loginOrLogout (): Promise<any> {
     if (this.commonStore.persistenceStore.get("jwt")) {
       // logout
       this.commonStore.persistenceStore.remove("jwt")
       this.commonStore.persistenceStore.remove("username")
-      return {} as any
+      return {}
     } else {
       // login
       // const jwt = await HttpRequestUtil.post("https://www.baidu.com")
+      // throw new Error("test")
       const jwt = "hsgfjsfgjsyjsfjs"
       this.loginModalVisible = false
       this.commonStore.persistenceStore.set("jwt", jwt)
       this.commonStore.persistenceStore.set("username", this.loginUsername)
-      return {
-        jwt: jwt
-      } as any
+      return {}
     }
 
   }
