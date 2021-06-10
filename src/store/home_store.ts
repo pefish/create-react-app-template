@@ -1,14 +1,12 @@
 import { observable } from 'mobx';
-import CommonStore from './common_store';
 import { withGlobalLoading, wrapPromiseWithErrorTip } from '../util/decorator';
 import HttpRequestUtil from "@pefish/js-util-httprequest"
-import { ReturnType } from '../util/type';
+import {commonStore} from "./init";
 
 
 const isWebMediaString = "(min-width: 996px)"
 export default class HomeStore {
 
-  private commonStore: CommonStore
   @observable
   public counter = 0;
 
@@ -20,9 +18,6 @@ export default class HomeStore {
   @observable public loginUsername: string = ""
   @observable public loginPassword: string = ""
 
-  constructor (commonStore: CommonStore) {
-    this.commonStore = commonStore
-  }
 
   public setMediaListeners () {
     this.isWebMatchMedia.addListener(e => {
@@ -37,10 +32,10 @@ export default class HomeStore {
   @wrapPromiseWithErrorTip()
   @withGlobalLoading()
   public async loginOrLogout (): Promise<any> {
-    if (this.commonStore.persistenceStore.get("jwt")) {
+    if (commonStore.persistenceStore.get("jwt")) {
       // logout
-      this.commonStore.persistenceStore.remove("jwt")
-      this.commonStore.persistenceStore.remove("username")
+      commonStore.persistenceStore.remove("jwt")
+      commonStore.persistenceStore.remove("username")
       return {}
     } else {
       // login
@@ -48,8 +43,8 @@ export default class HomeStore {
       // throw new Error("test")
       const jwt = "hsgfjsfgjsyjsfjs"
       this.loginModalVisible = false
-      this.commonStore.persistenceStore.set("jwt", jwt)
-      this.commonStore.persistenceStore.set("username", this.loginUsername)
+      commonStore.persistenceStore.set("jwt", jwt)
+      commonStore.persistenceStore.set("username", this.loginUsername)
       return {}
     }
 

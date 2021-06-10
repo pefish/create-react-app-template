@@ -3,6 +3,7 @@ import {
   Modal
 } from 'antd';
 import CommonStore from "../store/common_store";
+
 // 使方法调用期间显示全局loading
 export function withGlobalLoading() {
   return (target, name, descriptor) => {
