@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 import CommonStore from './common_store';
-import { withGlobalLoading, wrapPromise } from '../util/decorator';
+import { withGlobalLoading, wrapPromiseWithErrorTip } from '../util/decorator';
 import HttpRequestUtil from "@pefish/js-util-httprequest"
 import { ReturnType } from '../util/type';
 
@@ -34,8 +34,8 @@ export default class HomeStore {
     this.selectedMenu = key
   }
 
+  @wrapPromiseWithErrorTip()
   @withGlobalLoading()
-  @wrapPromise()
   public async loginOrLogout (): Promise<any> {
     if (this.commonStore.persistenceStore.get("jwt")) {
       // logout
