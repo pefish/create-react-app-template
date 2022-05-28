@@ -2,14 +2,13 @@ import { ReturnType } from "./type";
 import {
   Modal
 } from 'antd';
-import CommonStore from "../store/common_store";
+import {commonStore} from "../store/init";
 
 // 使方法调用期间显示全局loading
 export function withGlobalLoading() {
   return (target, name, descriptor) => {
     let fun = descriptor.value;
     descriptor.value = async function (...args) {
-      const commonStore = this instanceof CommonStore ? this : this.commonStore
       try {
         commonStore.globalLoading = true
         return await fun.apply(this, args)
@@ -29,7 +28,7 @@ export function wrapPromise() {
     descriptor.value = async function (...args): Promise<ReturnType> {
       try {
         return [await fun.apply(this, args), null]
-      } catch (err) {
+      } catch (err: any) {
         return [null, err]
       }
     }
@@ -45,7 +44,7 @@ export function wrapPromiseWithErrorTip() {
     descriptor.value = async function (...args): Promise<ReturnType> {
       try {
         return [await fun.apply(this, args), null]
-      } catch (err) {
+      } catch (err: any) {
         await new Promise((resolve, reject) => {
           Modal.error({
             content: err.message,
@@ -69,7 +68,7 @@ export function withLogout(funcName) {
     descriptor.value = async function (...args) {
       try {
         return await fun.apply(this, args)
-      } catch (err) {
+      } catch (err: any) {
         console.log(err.message)
         if (err.message === "Unauthorized") {
           await this[funcName]()
