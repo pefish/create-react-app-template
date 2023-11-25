@@ -28,8 +28,14 @@
   background-color: #363636;
   font-size: 14px;
   height: 30px;
-  padding-left: 20px;
-  padding-right: 20px;
+}
+
+.suspension-left {
+  margin-left: 20px;
+}
+
+.suspension-right {
+  margin-right: 20px;
 }
 
 .content {

@@ -6,20 +6,20 @@ import './App.css';
 import { Provider } from 'mobx-react';
 import Index from './page/index'
 import {commonStore, homeStore} from "./store/init";
+import { observer } from "mobx-react"
 
-const stores = {
-  commonStore,
-  homeStore,
-};
 
-const App: React.FC = () => {
+const App = observer(() => {
   return (
-    <Provider {...stores}>
+    <Provider {...{
+      commonStore,
+      homeStore,
+    }}>
       <BrowserRouter>
         <Index />
       </BrowserRouter>
     </Provider>
   );
-}
+})
 
 export default App;

@@ -8,6 +8,7 @@ import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/i
 import HomeStore from '../store/home_store';
 import CommonStore from '../store/common_store';
 import MyModal from "../component/my_modal";
+import {runInAction} from "mobx";
 
 
 const { Sider } = Layout;
@@ -45,6 +46,7 @@ export default class Home extends React.Component<{
   }
 
   render() {
+    console.log(111)
     return (
       <div className="app">
         <div className="suspension" style={{
@@ -52,28 +54,30 @@ export default class Home extends React.Component<{
           justifyContent: "space-between",
           alignItems: "center"
         }}>
-          <div className="click-div" onClick={() => {
+          <div className="suspension-left click-div" onClick={() => {
             window.location.href = "./"
           }}>
             <span>{this.props.commonStore!.websiteSimpleTitle}</span>
           </div>
-          <div style={{
+          <div className="suspension-right" style={{
             display: "flex",
             justifyContent: "space-between",
           }}>
             <label style={{
               marginRight: 10,
               color: "red"
-            }}>{this.props.commonStore!.persistenceStore.get("jwt") ? this.props.commonStore!.persistenceStore.get("username") : ""}</label>
+            }}>{this.props.homeStore!.userOnline ? this.props.commonStore!.persistenceStore.get("username") : ""}</label>
             <div className="click-div" onClick={() => {
-              if (this.props.commonStore!.persistenceStore.get("jwt")) {
+              if (this.props.homeStore!.userOnline) {
                 // logout
-                this.props.homeStore!.loginOrLogout()
+                this.props.homeStore!.logout()
               } else {
                 // login
-                this.props.homeStore!.loginModalVisible = true
+                runInAction(()=>{
+                  this.props.homeStore!.loginModalVisible = true
+                })
               }
-            }}><span>{this.props.commonStore!.persistenceStore.get("jwt") ? "登出" : "登陆"}</span></div>
+            }}><span>{this.props.homeStore!.userOnline ? "登出" : "登陆"}</span></div>
           </div>
         </div>
         <div className="content">
@@ -155,13 +159,17 @@ export default class Home extends React.Component<{
           this.props.homeStore!.loginModalVisible = false
         }}>
           <Input placeholder="用户名" addonBefore="用户名" value={this.props.homeStore!.loginUsername} onChange={(e) => {
-            this.props.homeStore!.loginUsername = e.target.value
+            runInAction(() => {
+              this.props.homeStore!.loginUsername = e.target.value
+            })
           }} />
           <Input placeholder="密码" addonBefore="密码" type={"password"} value={this.props.homeStore!.loginPassword} onChange={(e) => {
-            this.props.homeStore!.loginPassword = e.target.value
+            runInAction(() => {
+              this.props.homeStore!.loginPassword = e.target.value
+            })
           }} />
           <Button type={`primary`} onClick={() => {
-            this.props.homeStore!.loginOrLogout()
+            this.props.homeStore!.login()
           }} style={{
             marginTop: 10,
           }}>确认</Button>

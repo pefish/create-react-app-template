@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import Home from './home'
 import NotFound from './not_found'
 import { inject, observer } from 'mobx-react';
@@ -23,11 +23,11 @@ export default class Index extends React.Component<{
           width: `100%`,
           height: `100%`,
         }}>
-          <Switch>
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/" component={Home} />
-            <Route component={NotFound} />
-          </Switch>
+          <Routes>
+            <Route path="/home" element={<Home/>} />
+            <Route path="/" element={<Home/>} />
+            <Route element={<NotFound/>} />
+          </Routes>
         </div>
       </Spin>
 
