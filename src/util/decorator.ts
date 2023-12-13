@@ -6,7 +6,7 @@ import {isProd} from "./env";
 import {commonStore} from "../store/init";
 import { runInAction } from "mobx"
 
-// 使方法调用期间显示全局loading
+// 使方法调用期间显示全局 loading
 export function withGlobalLoading() {
   return (target, name, descriptor) => {
     let fun = descriptor.value;
